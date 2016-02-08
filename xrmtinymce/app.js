@@ -1,7 +1,7 @@
  tinymce.init({
-    selector: '#crmhtmleditor',
-    height: 300,
-    max_height: 300,
+    selector: '#xrmtinymce',
+    height: 200,
+    max_height: 200,
     plugins: [
       'advlist autolink lists link image charmap print preview anchor',
       'searchreplace visualblocks code fullscreen',
@@ -15,13 +15,13 @@
                     var field = parent.Xrm.Page.getAttribute(_fieldName);
                     var maxLength = field.getMaxLength();
 
-                    // If the fields max length is exceeded display an error
-                    if (value.length > maxLength) {
-                      parent.Xrm.Utility.alertDialog("You have exceeded the maximum number of " + maxLength + " characters in this field");
+                    
+                    if (content.length > maxLength) {
+                      parent.Xrm.Utility.alertDialog("Maximum length exceeded. Should be below: " + maxLength);
                     }
 
-                    // Set the value, even if max length is exceeded to allow CRM validation to kick in on save
-                    field.setValue(value);
+                    
+                    field.setValue(content);
             });
           }
   });
@@ -31,18 +31,18 @@ var _fieldName = getQueryString("field");
 
  $(document).ready(function () {
 
-          // Get the existing value from the form (field must be on the form, hidden etc)
+          // Saved value if it exists
           var field = parent.Xrm.Page.getAttribute(_fieldName);
           var htmlValue = field.getValue();
 
-          // Populate the HTML editor with the existing value from the form
-          document.getElementById('crmhtmleditor').value = htmlValue;
+          // Populate saved value on load
+          if( htmlValue !=null )
+            document.getElementById('xrmtinymce').value = htmlValue;
           
         });
 
 
 
-// Get the value of a specific querystring
 function getQueryString(key) {
   var value = "";
 
